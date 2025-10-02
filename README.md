@@ -1,65 +1,82 @@
-# xpocommit-ai README
+# XpoCommit AI
 
-This is the README for your extension "xpocommit-ai". After writing up a brief description, we recommend including the following sections.
+Automatically generate meaningful Git commit messages using AI directly in VS Code.
 
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+![Demo](https://via.placeholder.com/600x200?text=XpoCommit+AI+Demo)
 
 ---
 
-## Working with Markdown
+## Features
 
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+- Automatically generate Git commit messages from your code changes.
+- Insert commit messages directly into the VS Code Source Control commit box.
+- Securely store your Gemini API key using VS Code secrets.
+- Customizable ignored files to avoid unnecessary diffs.
+- High-visibility SCM sidebar button for quick access.
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
+---
 
-## For more information
+## Requirements
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- A Gemini API key for AI-powered commit generation.
 
-**Enjoy!**
+---
+
+## Extension Settings
+
+This extension contributes the following settings:
+
+- `xpocommit-ai.ignoredFiles`: Glob patterns for files to ignore when generating commit messages. Default includes:
+
+```json
+[
+	"node_modules/**",
+	".git/**",
+	".vscode/**",
+	"dist/**",
+	"build/**",
+	"out/**",
+	".DS_Store",
+	"*.log",
+	"*.tmp",
+	"*.env",
+	".idea/**",
+	".history/**",
+	".cache/**",
+	"package-lock.json",
+	"yarn.lock",
+	"pnpm-lock.yaml",
+	"Cargo.lock",
+	"go.sum",
+	"composer.lock",
+	"__pycache__/**",
+	"*.pyc"
+]
+```
+
+---
+
+## Known Issues
+
+- Ensure a Git repository is open; the button will not appear otherwise.
+- The extension may not work with non-standard SCM providers.
+
+---
+
+## Release Notes
+
+### 0.0.1
+
+Initial release of XpoCommit_AI with automatic AI commit message generation.
+
+---
+
+## Usage
+
+1. Open your Git workspace in VS Code.
+2. Make code changes so Git registers a diff.
+3. Click the **⚡ Generate Commit Message** button in the Source Control view.
+4. Set your Gemini API key if prompted.
+5. Your commit message is automatically inserted into the commit input box.
+
+---
