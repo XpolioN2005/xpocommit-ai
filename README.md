@@ -77,7 +77,7 @@ Initial release of XpoCommit AI with automatic AI commit message generation.
 
 1. Open your Git workspace in VS Code.
 2. Make code changes so Git registers a diff.
-3. Click the **⚡ Generate Commit Message** button in the Source Control view.
+3. Click the button in the Source Control view. or use command pallet **XpoCommit: Generate Commit Message - Gemini** or using **ctrl + alt + c**
 4. Set your Gemini API key if prompted.
 5. Your commit message is automatically inserted into the commit input box.
 
