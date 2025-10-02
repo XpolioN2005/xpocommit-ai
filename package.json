@@ -25,7 +25,26 @@
 					"default": [
 						"node_modules/**",
 						".git/**",
-						".vscode/**"
+						".vscode/**",
+						"dist/**",
+						"build/**",
+						"out/**",
+						".DS_Store",
+						"*.log",
+						"*.tmp",
+						"*.env",
+						".idea/**",
+						".history/**",
+						".cache/**",
+						"package-lock.json",
+						"yarn.lock",
+						"pnpm-lock.yaml",
+						"Cargo.lock",
+						"go.sum",
+						"composer.lock",
+						"requirements.txt",
+						"__pycache__/**",
+						"*.pyc"
 					],
 					"description": "Glob patterns of files to ignore when generating commit messages."
 				}
