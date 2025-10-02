@@ -60,9 +60,8 @@ This extension contributes the following settings:
 
 ## Known Issues
 
-- Ensure a Git repository is open; the button will not appear otherwise.
 - The extension may not work with non-standard SCM providers.
-
+- Please let me know if any issue is detected.
 ---
 
 ## Release Notes
