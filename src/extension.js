@@ -52,31 +52,44 @@ function activate(context) {
 			}
 
 			const folder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
-			const diff = await getCleanGitDiff(folder);
-			if (!diff) {
-				vscode.window.showInformationMessage("NO CHANGES");
-				return;
-			}
-			vscode.window.showInformationMessage(`Diff length: ${diff.length}`);
-			const response = await generateCommitMessage(context, diff);
 
-			if (!response) {
-				vscode.window.showErrorMessage("No commit message generated.");
-				return;
-			}
+			await vscode.window.withProgress(
+				{
+					location: vscode.ProgressLocation.Notification,
+					title: "Generating commit message...",
+					cancellable: false,
+				},
+				async (progress) => {
+					const gitAPI = getGitExtension();
+					if (!gitAPI) {
+						vscode.window.showErrorMessage("Git extension not found.");
+						return;
+					}
 
-			// Insert commit message into VSCode Git commit box
-			const gitAPI = getGitExtension();
-			if (!gitAPI) return;
+					const repo = gitAPI.repositories[0];
+					if (!repo) {
+						vscode.window.showErrorMessage("No Git repository found.");
+						return;
+					}
 
-			const repo = gitAPI.repositories[0]; // use the first repo in the workspace
-			if (!repo) {
-				vscode.window.showErrorMessage("No Git repository found.");
-				return;
-			}
+					const diff = await getCleanGitDiff(folder);
+					if (!diff) {
+						vscode.window.showInformationMessage("No changes found.");
+						return;
+					}
 
-			repo.inputBox.value = response;
-			vscode.window.showInformationMessage("AI commit message inserted!");
+					const response = await generateCommitMessage(context, diff);
+
+					if (!response) {
+						vscode.window.showErrorMessage("No commit message generated.");
+						return;
+					}
+
+					repo.inputBox.value = response;
+
+					vscode.window.showInformationMessage("Commit message inserted!");
+				}
+			);
 		}
 	);
 

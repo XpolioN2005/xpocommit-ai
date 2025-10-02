@@ -9,7 +9,9 @@
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [],
+	"activationEvents": [
+		"onView:scm"
+	],
 	"main": "./src/extension.js",
 	"contributes": {
 		"configuration": {
@@ -49,6 +51,15 @@
 				"command": "xpocommit-ai.generateCommit",
 				"key": "ctrl+alt+c",
 				"when": "editorTextFocus"
+			}
+		]
+	},
+	"menus": {
+		"scm/title": [
+			{
+				"command": "xpocommit-ai.generateCommit",
+				"group": "navigation",
+				"when": "scmProvider != null"
 			}
 		]
 	},
