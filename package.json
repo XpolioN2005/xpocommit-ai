@@ -1,33 +1,68 @@
 {
-  "name": "xpocommit-ai",
-  "displayName": "XpoCommit_AI",
-  "description": "auto commit using ai",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.104.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./extension.js",
-  "contributes": {
-    "commands": [{
-      "command": "xpocommit-ai.helloWorld",
-      "title": "Hello World"
-    }]
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "vscode-test"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.104.0",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
-    "eslint": "^9.34.0",
-    "@vscode/test-cli": "^0.0.11",
-    "@vscode/test-electron": "^2.5.2"
-  }
+	"name": "xpocommit-ai",
+	"displayName": "XpoCommit_AI",
+	"description": "auto commit using ai",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.104.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [],
+	"main": "./src/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "XpoCommit AI",
+			"properties": {
+				"xpocommit-ai.ignoredFiles": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"node_modules/**",
+						".git/**",
+						".vscode/**"
+					],
+					"description": "Glob patterns of files to ignore when generating commit messages."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "xpocommit-ai.generateCommit",
+				"title": "Generate Commit Message (AI)",
+				"icon": "$(sparkle)"
+			},
+			{
+				"command": "xpocommit-ai.setApiKey",
+				"title": "XpoCommit: Set API Key"
+			},
+			{
+				"command": "xpocommit-ai.clearApiKey",
+				"title": "XpoCommit: Clear API Key"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "xpocommit-ai.generateCommit",
+				"key": "ctrl+alt+c",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.104.0",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "22.x",
+		"eslint": "^9.34.0",
+		"@vscode/test-cli": "^0.0.11",
+		"@vscode/test-electron": "^2.5.2"
+	}
 }
