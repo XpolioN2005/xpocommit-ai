@@ -1,5 +1,6 @@
 const vscode = require("vscode");
-const { getCleanGitDiff } = require("./utils/git");
+const { getCleanGitDiff, getGitExtension } = require("./utils/git");
+const { generateCommitMessage } = require("./utils/aiHandeler");
 
 const SECRET_KEY = "xpocommit-ai.apiKey";
 
@@ -57,10 +58,25 @@ function activate(context) {
 				return;
 			}
 			vscode.window.showInformationMessage(`Diff length: ${diff.length}`);
+			const response = await generateCommitMessage(context, diff);
 
-			vscode.window.showInformationMessage(
-				"TODO: implement commit generation with AI."
-			);
+			if (!response) {
+				vscode.window.showErrorMessage("No commit message generated.");
+				return;
+			}
+
+			// Insert commit message into VSCode Git commit box
+			const gitAPI = getGitExtension();
+			if (!gitAPI) return;
+
+			const repo = gitAPI.repositories[0]; // use the first repo in the workspace
+			if (!repo) {
+				vscode.window.showErrorMessage("No Git repository found.");
+				return;
+			}
+
+			repo.inputBox.value = response;
+			vscode.window.showInformationMessage("AI commit message inserted!");
 		}
 	);
 

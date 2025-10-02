@@ -32,7 +32,7 @@
 		"commands": [
 			{
 				"command": "xpocommit-ai.generateCommit",
-				"title": "Generate Commit Message (AI)",
+				"title": "XpoCommit: Generate Commit Message - Gemini",
 				"icon": "$(sparkle)"
 			},
 			{

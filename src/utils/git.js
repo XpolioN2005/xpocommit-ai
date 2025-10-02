@@ -2,6 +2,15 @@ const { exec } = require("child_process");
 const vscode = require("vscode");
 const path = require("path");
 
+function getGitExtension() {
+	const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports;
+	if (!gitExtension) {
+		vscode.window.showErrorMessage("Git extension not found.");
+		return null;
+	}
+	return gitExtension.getAPI(1); // API version 1
+}
+
 /**
  * Run a command and return stdout
  */
@@ -58,7 +67,6 @@ async function getCleanGitDiff(cwd) {
 	}
 
 	try {
-		// Get staged files only
 		const rawFiles = await runCommand("git diff --name-only", cwd);
 		if (!rawFiles) return null;
 		const files = rawFiles
@@ -92,4 +100,5 @@ async function getCleanGitDiff(cwd) {
 
 module.exports = {
 	getCleanGitDiff,
+	getGitExtension,
 };
