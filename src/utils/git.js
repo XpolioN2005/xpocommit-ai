@@ -1,6 +1,7 @@
 const { exec } = require("child_process");
 const vscode = require("vscode");
 const path = require("path");
+const fs = require("fs");
 
 function getGitExtension() {
 	const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports;
@@ -11,9 +12,6 @@ function getGitExtension() {
 	return gitExtension.getAPI(1); // API version 1
 }
 
-/**
- * Run a command and return stdout
- */
 function runCommand(cmd, cwd) {
 	return new Promise((resolve, reject) => {
 		exec(cmd, { cwd }, (err, stdout, stderr) => {
@@ -23,9 +21,6 @@ function runCommand(cmd, cwd) {
 	});
 }
 
-/**
- * Check if folder is a Git repo
- */
 async function isGitRepo(cwd) {
 	try {
 		await runCommand("git rev-parse --is-inside-work-tree", cwd);
@@ -35,18 +30,12 @@ async function isGitRepo(cwd) {
 	}
 }
 
-/**
- * Convert glob patterns to simple regex (basic **, *)
- */
 function globToRegex(pattern) {
 	let g = pattern.replace(/\\/g, "/");
 	g = g.replace(/\*\*/g, ".*").replace(/\*/g, "[^/]*").replace(/\./g, "\\.");
 	return new RegExp("^" + g + "$");
 }
 
-/**
- * Filter files against ignored patterns
- */
 function filterIgnoredFiles(files, ignoredPatterns) {
 	if (!ignoredPatterns || ignoredPatterns.length === 0) return files;
 
@@ -57,9 +46,6 @@ function filterIgnoredFiles(files, ignoredPatterns) {
 	});
 }
 
-/**
- * Get git diff of staged files, filtered by ignoredFiles from settings
- */
 async function getCleanGitDiff(cwd) {
 	if (!(await isGitRepo(cwd))) {
 		vscode.window.showErrorMessage("Not a Git repository.");
@@ -67,20 +53,31 @@ async function getCleanGitDiff(cwd) {
 	}
 
 	try {
-		const rawFiles = await runCommand("git diff --name-only", cwd);
-		if (!rawFiles) return null;
-		const files = rawFiles
-			.split(/\r?\n/)
+		// Get modified and staged tracked files
+		const stagedFilesRaw = await runCommand(
+			"git diff --cached --name-only",
+			cwd
+		);
+		const unstagedFilesRaw = await runCommand("git diff --name-only", cwd);
+		// Get untracked files
+		const untrackedFilesRaw = await runCommand(
+			"git ls-files --others --exclude-standard",
+			cwd
+		);
+
+		let allFiles = [
+			...(stagedFilesRaw ? stagedFilesRaw.split(/\r?\n/) : []),
+			...(unstagedFilesRaw ? unstagedFilesRaw.split(/\r?\n/) : []),
+			...(untrackedFilesRaw ? untrackedFilesRaw.split(/\r?\n/) : []),
+		]
 			.map((f) => f.trim())
 			.filter(Boolean);
 
-		// Read ignored patterns from settings
 		const ignoredPatterns =
 			vscode.workspace.getConfiguration("xpocommit-ai").get("ignoredFiles") ||
 			[];
 
-		// Filter out ignored files
-		const validFiles = filterIgnoredFiles(files, ignoredPatterns);
+		const validFiles = filterIgnoredFiles(allFiles, ignoredPatterns);
 		if (validFiles.length === 0) {
 			vscode.window.showWarningMessage(
 				"No valid files to commit after ignoring patterns."
@@ -88,10 +85,54 @@ async function getCleanGitDiff(cwd) {
 			return null;
 		}
 
-		// Get diff for valid files only
-		const diffCmd = `git diff -- ${validFiles.map((f) => `"${f}"`).join(" ")}`;
-		const diff = await runCommand(diffCmd, cwd);
-		return diff || null;
+		let diffParts = [];
+
+		// Staged tracked files
+		if (stagedFilesRaw) {
+			const stagedTracked = validFiles.filter((f) =>
+				stagedFilesRaw.includes(f)
+			);
+			if (stagedTracked.length > 0) {
+				const stagedDiff = await runCommand(
+					`git diff --cached -- ${stagedTracked
+						.map((f) => `"${f}"`)
+						.join(" ")}`,
+					cwd
+				);
+				if (stagedDiff) diffParts.push(stagedDiff);
+			}
+		}
+
+		// Unstaged tracked files
+		if (unstagedFilesRaw) {
+			const unstagedTracked = validFiles.filter((f) =>
+				unstagedFilesRaw.includes(f)
+			);
+			if (unstagedTracked.length > 0) {
+				const unstagedDiff = await runCommand(
+					`git diff -- ${unstagedTracked.map((f) => `"${f}"`).join(" ")}`,
+					cwd
+				);
+				if (unstagedDiff) diffParts.push(unstagedDiff);
+			}
+		}
+
+		// Untracked/new files → return full content
+		if (untrackedFilesRaw) {
+			const untrackedValid = validFiles.filter((f) =>
+				untrackedFilesRaw.includes(f)
+			);
+			for (const file of untrackedValid) {
+				const fullPath = path.join(cwd, file);
+				if (fs.existsSync(fullPath)) {
+					const content = fs.readFileSync(fullPath, "utf-8");
+					// Simulate diff format for new file
+					diffParts.push(`--- /dev/null\n+++ b/${file}\n${content}`);
+				}
+			}
+		}
+
+		return diffParts.join("\n") || null;
 	} catch (err) {
 		vscode.window.showErrorMessage("Failed to get git diff: " + err);
 		return null;

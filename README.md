@@ -2,7 +2,9 @@
 
 Automatically generate meaningful Git commit messages using AI directly in VS Code.
 
-![Demo](https://via.placeholder.com/600x200?text=XpoCommit+AI+Demo)
+[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=flat)](https://github.com/yourusername/XpoCommit-AI/releases) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![VS Code](https://img.shields.io/badge/VS%20Code-extension-007ACC.svg?style=flat)](https://marketplace.visualstudio.com/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/yourusername/XpoCommit-AI/pulls) ![Gemini 2.5](https://img.shields.io/badge/LLM-Gemini%202.5-ff69b4.svg?style=flat)
+
+![Demo](demogif.gif)
 
 ---
 
@@ -67,7 +69,7 @@ This extension contributes the following settings:
 
 ### 0.0.1
 
-Initial release of XpoCommit_AI with automatic AI commit message generation.
+Initial release of XpoCommit AI with automatic AI commit message generation.
 
 ---
 
@@ -80,3 +82,8 @@ Initial release of XpoCommit_AI with automatic AI commit message generation.
 5. Your commit message is automatically inserted into the commit input box.
 
 ---
+
+## Contributing 🤝
+
+Contributions are welcome! Feel free to fork this repo, open issues, and submit pull requests.
+If you’d like to collaborate more deeply, reach out — I’m open to ideas and contributors from the ground up.
