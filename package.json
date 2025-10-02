@@ -54,7 +54,7 @@
 			{
 				"command": "xpocommit-ai.generateCommit",
 				"title": "XpoCommit: Generate Commit Message - Gemini",
-				"icon": "$(sparkle)"
+				"icon": "$(edit-sparkle)"
 			},
 			{
 				"command": "xpocommit-ai.setApiKey",
@@ -71,16 +71,16 @@
 				"key": "ctrl+alt+c",
 				"when": "editorTextFocus"
 			}
-		]
-	},
-	"menus": {
-		"scm/title": [
-			{
-				"command": "xpocommit-ai.generateCommit",
-				"group": "navigation",
-				"when": "scmProvider != null"
-			}
-		]
+		],
+		"menus": {
+			"scm/title": [
+				{
+					"command": "xpocommit-ai.generateCommit",
+					"group": "navigation@1",
+					"when": "scmProvider != null"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"lint": "eslint .",
