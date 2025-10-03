@@ -8,7 +8,7 @@
 		"url": "https://github.com/XpolioN2005/xpocommit-ai"
 	},
 	"publisher": "xpolion",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"engines": {
 		"vscode": "^1.104.0"
 	},
