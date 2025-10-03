@@ -65,6 +65,9 @@ This extension contributes the following settings:
 ---
 
 ## Release Notes
+### 1.0.0
+
+Added icon and formatted description
 
 ### 0.0.1
 
