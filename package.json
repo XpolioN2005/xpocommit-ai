@@ -1,7 +1,8 @@
 {
 	"name": "xpocommit-ai",
 	"displayName": "XpoCommit AI",
-	"description": "auto commit using ai",
+	"description": "auto commit message generator using Gemini ai",
+	"icon": "media/icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/XpolioN2005/xpocommit-ai"
