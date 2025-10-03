@@ -4,7 +4,7 @@ Automatically generate meaningful Git commit messages using AI directly in VS Co
 
 [![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=flat)](https://github.com/yourusername/XpoCommit-AI/releases) [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE) [![VS Code](https://img.shields.io/badge/VS%20Code-extension-007ACC.svg?style=flat)](https://marketplace.visualstudio.com/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/yourusername/XpoCommit-AI/pulls) ![Gemini 2.5](https://img.shields.io/badge/LLM-Gemini%202.5-ff69b4.svg?style=flat)
 
-[![Demo](demo.png)](demogif.gif)
+[![Demo](https://i.ibb.co/x8rjNWnR/demo.png)](https://drive.google.com/file/d/1OxFojp_stDsRhhLv0MY7EpTegk19N8tA/view?usp=drive_link)
 
 ---
 

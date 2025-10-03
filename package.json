@@ -1,7 +1,12 @@
 {
 	"name": "xpocommit-ai",
-	"displayName": "XpoCommit_AI",
+	"displayName": "XpoCommit AI",
 	"description": "auto commit using ai",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/XpolioN2005/xpocommit-ai"
+	},
+	"publisher": "xpolion",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.104.0"
